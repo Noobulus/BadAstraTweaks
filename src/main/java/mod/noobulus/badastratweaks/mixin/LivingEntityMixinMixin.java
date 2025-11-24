@@ -10,14 +10,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = LivingEntity.class, priority = 1500)
-public class LivingEntityMixinMixin {
+public abstract class LivingEntityMixinMixin {
     @TargetHandler(
             mixin = "earth.terrarium.adastra.mixins.common.LivingEntityMixin",
-            name = "adastra$travel",
-            print = true
+            name = "adastra$travel"
     )
-    @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"))
+    @Inject(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z"), cancellable = true)
     private void sevenToTenLayersOfMixins(Vec3 travelVector, CallbackInfo originalCi, CallbackInfo ci) {
         BadAstraTweaks.LOGGER.info("Injecting into adastra$travel");
+        ci.cancel();
     }
 }

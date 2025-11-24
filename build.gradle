@@ -146,6 +146,7 @@ mixin {
     add sourceSets.main, "bad_astra_tweaks.refmap.json"
     config 'bad_astra_tweaks.mixins.json'
 
+    debug.verbose = true
     debug.export = true
 }
 

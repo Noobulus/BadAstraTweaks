@@ -158,11 +158,19 @@ dependencies {
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    // mixin
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
+    // mixin squared
     compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.7-beta.1"))
     implementation(jarJar("com.github.bawnorton.mixinsquared:mixinsquared-forge:0.3.7-beta.1")) {
         jarJar.ranged(it, "[0.3.7-beta.1,)")
+    }
+
+    // mixin extras. do we have enough mixin yet
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")) {
+        jarJar.ranged(it, "[0.5.0,)")
     }
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings

@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "mod.noobulus.badastratweaks.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "bad_astra_tweaks.refmap.json",
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8",
+  "mixins": [
+    "LivingEntityMixin",
+    "LivingEntityMixinMixin"
+  ]
+}

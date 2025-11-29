@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class GravityTweakHelper {
@@ -29,6 +30,7 @@ public class GravityTweakHelper {
         return target.getAttribute(gravityAttribute);
     }
 
+    @Nullable
     public static AttributeModifier getModifier(AttributeInstance instance) {
         return instance.getModifier(modifierUUID);
     }
@@ -42,6 +44,12 @@ public class GravityTweakHelper {
     }
 
     public static float computeScaledFallDistance(float fallDistance, LivingEntity target) {
-        return (float) (fallDistance * (getModifier(getInstance(target)).getAmount() + 1));
+        AttributeInstance instance = getInstance(target); // this can be null. it's fine
+        AttributeModifier modifier; // but this dies if instance is null so we do that in the conditional
+        if ((modifier = getModifier(instance)) != null) {
+            return (float) (fallDistance * (modifier.getAmount() + 1));
+        } else {
+            return fallDistance;
+        }
     }
 }

@@ -1,11 +1,23 @@
 package mod.noobulus.badastratweaks;
 
 import com.mojang.logging.LogUtils;
+import earth.terrarium.adastra.api.systems.GravityApi;
+import earth.terrarium.adastra.api.systems.OxygenApi;
+import earth.terrarium.adastra.api.systems.PlanetData;
+import earth.terrarium.adastra.api.systems.TemperatureApi;
+import earth.terrarium.adastra.common.network.messages.ClientboundSyncLocalPlanetDataPacket;
+import mod.noobulus.badastratweaks.network.AdditionalData;
+import mod.noobulus.badastratweaks.network.ClientboundSyncAdditionalDataPacket;
+import mod.noobulus.badastratweaks.network.NetworkHandler;
+import mod.noobulus.badastratweaks.util.ColdSweatHelper;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -61,11 +73,15 @@ public class BadAstraTweaks
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
+        MinecraftForge.EVENT_BUS.addListener(BadAstraTweaks::onServerTick);
+
         // Register the item to a creative tab
         //modEventBus.addListener(this::addCreative);
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         //context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        NetworkHandler.init();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -110,4 +126,18 @@ public class BadAstraTweaks
         }
     }
      */
+
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            MinecraftServer server = event.getServer();
+            server.getPlayerList().getPlayers().forEach(player -> {
+                if (player.tickCount % 5 == 0) {
+                    short airState = 1;
+                    short temperature = (short) ColdSweatHelper.getWorldTempForPlayer(player);
+                    //NetworkHandler.CHANNEL.sendToPlayer(new ClientboundSyncLocalPlanetDataPacket(new PlanetData(true, (short) 1,1.0f)), player);
+                    NetworkHandler.CHANNEL.sendToPlayer(new ClientboundSyncAdditionalDataPacket(new AdditionalData(airState, temperature)), player);
+                }
+            });
+        }
+    }
 }

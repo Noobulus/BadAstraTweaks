@@ -4,14 +4,17 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "bad_astra_tweaks.refmap.json",
   "client": [
+    "GlacianRamModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "minVersion": "0.8",
   "mixins": [
+    "AdAstraMixin",
     "EntityMixin",
     "LivingEntityMixinMixin",
+    "SensorAppMixin",
     "ZipGunItemMixin"
   ]
 }

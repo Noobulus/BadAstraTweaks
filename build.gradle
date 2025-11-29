@@ -142,10 +142,14 @@ repositories {
         }
     }
 
+    // mixin squared
     maven { url = "https://maven.bawnorton.com/releases" }
 
     // Mirror
     maven { url = "https://maven.enjarai.dev/mirrors" }
+
+    // resourceful byte codecs
+    maven {url = "https://maven.teamresourceful.com/repository/maven-public/" }
 }
 
 mixin {
@@ -199,6 +203,10 @@ dependencies {
     implementation fg.deobf("maven.modrinth:resourceful-config:${resourceful_config_version}")
     implementation fg.deobf("maven.modrinth:resourceful-lib:${resourceful_lib_version}")
     implementation fg.deobf("maven.modrinth:botarium:${botarium_version}")
+
+    implementation fg.deobf("com.teamresourceful:bytecodecs:1.0.2")
+
+    implementation fg.deobf("maven.modrinth:cold-sweat:${cold_sweat_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
